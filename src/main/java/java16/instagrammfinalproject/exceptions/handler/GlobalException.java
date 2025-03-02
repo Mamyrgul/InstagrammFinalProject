@@ -1,5 +1,6 @@
 package java16.instagrammfinalproject.exceptions.handler;
 
+import java16.instagrammfinalproject.exceptions.response.ExceptionResponse;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class GlobalException {
     }
 
     @ExceptionHandler(BadRequestException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)  // 404
+    @ResponseStatus(HttpStatus.BAD_REQUEST)  // 400
     public ExceptionResponse badRequest(BadRequestException e) {
         return ExceptionResponse.
                 builder()

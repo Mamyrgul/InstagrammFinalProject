@@ -1,19 +1,23 @@
-package peaksoft.securitysessionproject.service.serviceImpl;
+package java16.instagrammfinalproject.service.serviceImpl;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import java16.instagrammfinalproject.config.jwtConfig.JwtService;
+import java16.instagrammfinalproject.dto.response.AuthResponse;
+import java16.instagrammfinalproject.dto.response.ProfileResponse;
+import java16.instagrammfinalproject.dto.request.SingInRequest;
+import java16.instagrammfinalproject.dto.request.SingUpRequest;
+import java16.instagrammfinalproject.enums.Gender;
+import java16.instagrammfinalproject.enums.Role;
+import java16.instagrammfinalproject.models.User;
+import java16.instagrammfinalproject.repo.UserRepo;
+import java16.instagrammfinalproject.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import peaksoft.securitysessionproject.config.jwtConfig.JwtService;
-import peaksoft.securitysessionproject.dto.AuthResponse;
-import peaksoft.securitysessionproject.dto.ProfileResponse;
-import peaksoft.securitysessionproject.dto.SingInRequest;
-import peaksoft.securitysessionproject.dto.SingUpRequest;
-import peaksoft.securitysessionproject.entities.User;
-import peaksoft.securitysessionproject.enums.Role;
-import peaksoft.securitysessionproject.repo.UserRepo;
-import peaksoft.securitysessionproject.service.AuthService;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -21,8 +25,10 @@ public class AuthServiceImpl implements AuthService {
     // Bcrypt encode /decode
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-
-
+    String biography;
+    @Enumerated(EnumType.STRING)
+    Gender gender;
+    String imageUrl;
     @Override
     public AuthResponse singUp(SingUpRequest singUpRequest) {
         if (userRepo.existsByEmail(singUpRequest.email())){
@@ -47,9 +53,6 @@ public class AuthServiceImpl implements AuthService {
                 .role(user.getRole())
                 .build();
     }
-
-    // Auth
-
     @Override
     public AuthResponse singIn(SingInRequest singInRequest) {
         User user = userRepo.findUserByEmail(singInRequest.email()).orElseThrow(()

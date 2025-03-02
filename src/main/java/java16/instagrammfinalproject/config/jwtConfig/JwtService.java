@@ -1,14 +1,14 @@
-package peaksoft.securitysessionproject.config.jwtConfig;
+package java16.instagrammfinalproject.config.jwtConfig;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import java16.instagrammfinalproject.models.User;
+import java16.instagrammfinalproject.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import peaksoft.securitysessionproject.entities.User;
-import peaksoft.securitysessionproject.repo.UserRepo;
 
 import java.time.ZonedDateTime;
 

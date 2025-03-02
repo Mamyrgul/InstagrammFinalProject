@@ -1,4 +1,4 @@
-package java16.instagrammfinalproject.dto;
+package java16.instagrammfinalproject.dto.response;
 
 import java16.instagrammfinalproject.enums.Role;
 import lombok.Builder;

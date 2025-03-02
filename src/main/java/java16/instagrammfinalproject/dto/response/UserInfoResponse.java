@@ -1,4 +1,12 @@
 package java16.instagrammfinalproject.dto.response;
 
-public record UserInfoResponse() {
+import lombok.Builder;
+
+@Builder
+public record UserInfoResponse(
+        Long id,
+        String firstName,
+        String lastName,
+        String email
+) {
 }

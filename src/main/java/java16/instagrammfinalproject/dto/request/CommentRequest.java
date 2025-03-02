@@ -1,4 +1,9 @@
 package java16.instagrammfinalproject.dto.request;
 
-public class CommentRequest {
+import lombok.Builder;
+
+@Builder
+public record CommentRequest (
+        String comment
+){
 }

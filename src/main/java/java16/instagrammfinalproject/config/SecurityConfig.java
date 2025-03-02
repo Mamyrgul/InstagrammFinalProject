@@ -1,5 +1,7 @@
-package peaksoft.securitysessionproject.config;
+package java16.instagrammfinalproject.config;
 
+import java16.instagrammfinalproject.config.jwtConfig.JwtFilter;
+import java16.instagrammfinalproject.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import peaksoft.securitysessionproject.config.jwtConfig.JwtFilter;
-import peaksoft.securitysessionproject.repo.UserRepo;
 
 @Configuration
 @EnableWebSecurity
@@ -25,9 +25,7 @@ import peaksoft.securitysessionproject.repo.UserRepo;
 public class SecurityConfig {
     private final JwtFilter jwtFilter;
     private final UserRepo userRepo;
-
-
-
+     @Bean
     public  UserDetailsService userDetailsService (){
         return email -> userRepo.findUserByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException("User not found")
@@ -39,7 +37,12 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(a -> a
-                        .requestMatchers("/api/auth/**")
+                        .requestMatchers(
+                                "/**",
+                                "/api/auth/**",
+                                "/swagger-ui/index.html",
+                                "/swagger-resources/**",
+                                "/v3/api-docs/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated());

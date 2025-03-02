@@ -1,10 +1,10 @@
-package peaksoft.securitysessionproject.service;
+package java16.instagrammfinalproject.service;
 
+import java16.instagrammfinalproject.dto.response.AuthResponse;
+import java16.instagrammfinalproject.dto.response.ProfileResponse;
+import java16.instagrammfinalproject.dto.request.SingInRequest;
+import java16.instagrammfinalproject.dto.request.SingUpRequest;
 import org.springframework.stereotype.Service;
-import peaksoft.securitysessionproject.dto.AuthResponse;
-import peaksoft.securitysessionproject.dto.ProfileResponse;
-import peaksoft.securitysessionproject.dto.SingInRequest;
-import peaksoft.securitysessionproject.dto.SingUpRequest;
 
 @Service
 public interface AuthService {

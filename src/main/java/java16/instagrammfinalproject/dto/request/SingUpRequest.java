@@ -1,11 +1,8 @@
 package java16.instagrammfinalproject.dto.request;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import java16.instagrammfinalproject.enums.Gender;
 import lombok.Builder;
 
 @Builder
@@ -35,12 +32,6 @@ public record SingUpRequest(
                 regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{8,}$",
                 message = "Пароль должен быть не менее 8 символов, содержать хотя бы одну букву и одну цифру"
         )
-        String password,
-
-        // Необязательные поля, их можно оставить null
-        String biography,
-        @Enumerated(EnumType.STRING)
-        Gender gender,
-        String imageUrl
+        String password
 ) {
 }

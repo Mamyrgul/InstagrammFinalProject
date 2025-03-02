@@ -1,14 +1,15 @@
-package peaksoft.securitysessionproject.api;
+package java16.instagrammfinalproject.api;
 
+import jakarta.validation.Valid;
+import java16.instagrammfinalproject.dto.response.AuthResponse;
+import java16.instagrammfinalproject.dto.request.SingInRequest;
+import java16.instagrammfinalproject.dto.request.SingUpRequest;
+import java16.instagrammfinalproject.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import peaksoft.securitysessionproject.dto.AuthResponse;
-import peaksoft.securitysessionproject.dto.SingInRequest;
-import peaksoft.securitysessionproject.dto.SingUpRequest;
-import peaksoft.securitysessionproject.service.AuthService;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,14 +17,13 @@ import peaksoft.securitysessionproject.service.AuthService;
 public class AuthApi {
     private final AuthService authService;
 
-
     @PostMapping("/singUp")
-    public AuthResponse singUp(@RequestBody SingUpRequest singUpRequest){
+    public AuthResponse singUp(@Valid @RequestBody SingUpRequest singUpRequest){
        return  authService.singUp(singUpRequest);
     }
 
     @PostMapping("/singIn")
-    public AuthResponse singIn(@RequestBody SingInRequest singInRequest){
+    public AuthResponse singIn(@Valid @RequestBody SingInRequest singInRequest){
         return authService.singIn(singInRequest);
     }
 
