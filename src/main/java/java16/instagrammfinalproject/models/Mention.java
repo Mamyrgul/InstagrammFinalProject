@@ -17,15 +17,10 @@ public class Mention {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mention_gen")
     @SequenceGenerator(name = "mention_gen", sequenceName = "mention_seq")
     Long id;
-
     @ManyToOne
-    @JoinColumn(name = "post_id", nullable = true) // Может быть null, если это комментарий
     Post post;
-
     @ManyToOne
-    @JoinColumn(name = "comment_id", nullable = true) // Может быть null, если это пост
     Comment comment;
-
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     User user;

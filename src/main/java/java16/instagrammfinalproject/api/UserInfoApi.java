@@ -25,8 +25,7 @@ public class UserInfoApi {
   @PutMapping("/{id}")
     public SimpleResponse updateUserInfo(@Valid @PathVariable Long id,@RequestBody UserInfoRequest userInfoRequest) {
         return userInfoService.updateUserInfo(id,userInfoRequest);
-  }
-    @PreAuthorize("hasRole('ADMIN') or @securityService.isOwner(#id)")
+  }@PreAuthorize("hasRole('ADMIN') or @securityService.isOwner(#id)")
     @DeleteMapping("/{id}")
     public SimpleResponse deleteUserInfo(@PathVariable Long id) {
         return userInfoService.deleteUserInfo(id);

@@ -1,14 +1,11 @@
 package java16.instagrammfinalproject.service.serviceImpl;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import java16.instagrammfinalproject.config.jwtConfig.JwtService;
 import java16.instagrammfinalproject.dto.response.AuthResponse;
 import java16.instagrammfinalproject.dto.response.ProfileResponse;
 import java16.instagrammfinalproject.dto.request.SingInRequest;
 import java16.instagrammfinalproject.dto.request.SingUpRequest;
-import java16.instagrammfinalproject.enums.Gender;
 import java16.instagrammfinalproject.enums.Role;
 import java16.instagrammfinalproject.models.User;
 import java16.instagrammfinalproject.repo.UserRepo;
@@ -22,13 +19,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
     private final UserRepo userRepo;
-    // Bcrypt encode /decode
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    String biography;
-    @Enumerated(EnumType.STRING)
-    Gender gender;
-    String imageUrl;
+
     @Override
     public AuthResponse singUp(SingUpRequest singUpRequest) {
         if (userRepo.existsByEmail(singUpRequest.email())){

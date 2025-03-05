@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import java16.instagrammfinalproject.enums.Gender;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
 @Entity
 @Table(name = "userInfos")
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -22,10 +21,7 @@ public class UserInfo {
     @Enumerated(EnumType.STRING)
     Gender gender;
     String imageUrl;
-    @OneToOne( cascade = CascadeType.ALL)
-    User user;
 
-    public UserInfo(Long id) {
-        this.id = id;
-    }
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    User user;
 }

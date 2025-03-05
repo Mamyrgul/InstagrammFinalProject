@@ -15,5 +15,5 @@ public class PostRequest {
     private String title;
     private String description;
     private Long userId;
-    private List<String> images; // URL-адреса изображений
+    private List<String> images;
 }

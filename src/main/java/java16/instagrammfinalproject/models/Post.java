@@ -35,6 +35,7 @@ public class Post {
     List<Image> images;
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     List<Mention> mentions;
+
     public void addMention(Optional<User> user) {
         if (mentions == null) {
             mentions = new ArrayList<>();
@@ -43,7 +44,7 @@ public class Post {
 
         Mention mention = Mention.builder()
                 .post(this)
-                .user(mentionUser) // Теперь передаем объект User, а не Optional<User>
+                .user(mentionUser)
                 .build();
 
         mentions.add(mention);
@@ -53,19 +54,17 @@ public class Post {
     protected void onCreate() {
         createdAt = LocalDate.now();
     }
-    // Метод для добавления лайка
+
     public void addLike(Like like) {
         if (!likes.contains(like)) {
             likes.add(like);
-            likeCount++;  // Увеличиваем количество лайков
+            likeCount++;
         }
     }
-
-    // Метод для удаления лайка
     public void removeLike(Like like) {
         if (likes.contains(like)) {
             likes.remove(like);
-            likeCount--;  // Уменьшаем количество лайков
+            likeCount--;
         }
     }
 }

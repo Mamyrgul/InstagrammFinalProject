@@ -23,8 +23,7 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
     private final PostRepo postRepository;
     private final UserRepo userRepository;
-    private final MentionService mentionService; // Убираем null, используем Autowired
-
+    private final MentionService mentionService;
 
     public void createPost(PostRequest request) {
         User user = userRepository.findById(request.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
@@ -32,7 +31,6 @@ public class PostServiceImpl implements PostService {
         if (request.getImages().isEmpty()) {
             throw new RuntimeException("Пост должен содержать хотя бы одно изображение!");
         }
-
         Post post = Post.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
@@ -40,12 +38,11 @@ public class PostServiceImpl implements PostService {
                 .createdAt(LocalDate.now())
                 .user(user)
                 .images(request.getImages().stream()
-                        .map(imgUrl -> new Image(null, imgUrl, null)) // Создаем изображения
+                        .map(imgUrl -> new Image(null, imgUrl, null))
                         .collect(Collectors.toList()))
                 .build();
 
-        post.getImages().forEach(image -> image.setPost(post)); // Устанавливаем связь изображений с постом
-
+        post.getImages().forEach(image -> image.setPost(post));
         postRepository.save(post);
     }
 
@@ -80,15 +77,12 @@ public class PostServiceImpl implements PostService {
 
     public String addMentionToPost(Long postId, String firstName) {
         try {
-            // Находим пост по его id
             Post post = postRepository.findById(postId)
                     .orElseThrow(() -> new RuntimeException("Post with id " + postId + " not found"));
 
-            // Находим пользователя по firstName
             User userToMention = userRepository.findByFirstName(firstName)
                     .orElseThrow(() -> new RuntimeException("User with firstName " + firstName + " not found"));
 
-            // Добавляем упоминание в пост
             mentionService.addMentionToPost(post, Optional.ofNullable(userToMention));
 
             return "User mentioned in post successfully!";

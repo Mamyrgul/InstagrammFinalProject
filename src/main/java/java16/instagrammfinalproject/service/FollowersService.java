@@ -5,7 +5,7 @@ import java16.instagrammfinalproject.models.User;
 import java.util.List;
 
 public interface FollowersService {
-    User subscribe(Long followerId, Long followingId);
+    User subscribe(Long followingId, Long followerId);
     List<User> getAllSubscribersByUserId(Long userId);
     List<User> getAllSubscriptionsByUserId(Long userId);
 }

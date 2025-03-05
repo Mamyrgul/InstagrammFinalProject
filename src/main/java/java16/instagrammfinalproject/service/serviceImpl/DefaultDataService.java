@@ -17,7 +17,7 @@ public class DefaultDataService {
     public void init() {
         String email = "admin@gmail.com";
         boolean exists = userRepo.existsByEmail(email);
-        if (!exists) { // Исправил условие (сохраняем, только если пользователя нет)
+        if (!exists) {
             User admin = User.builder()
                     .firstName("Admin")
                     .lastName("InstagrammFinalProject")

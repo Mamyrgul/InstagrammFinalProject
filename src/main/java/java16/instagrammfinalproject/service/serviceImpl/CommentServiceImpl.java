@@ -1,5 +1,6 @@
 package java16.instagrammfinalproject.service.serviceImpl;
 
+import java16.instagrammfinalproject.dto.response.CommentResponse;
 import java16.instagrammfinalproject.models.Comment;
 import java16.instagrammfinalproject.models.Like;
 import java16.instagrammfinalproject.models.Post;
@@ -23,7 +24,6 @@ public class CommentServiceImpl implements CommentService {
         private final PostRepo postRepository;
         private final UserRepo userRepository;
 
-        // ✅ Сохранение комментария
         public Comment saveComment(Long postId, Long userId, String text) {
             Post post = postRepository.findById(postId)
                     .orElseThrow(() -> new RuntimeException("Post not found"));
@@ -40,7 +40,6 @@ public class CommentServiceImpl implements CommentService {
 
             commentRepository.save(comment);
 
-            // 🔥 Создаем лайк с `likeCount = 0`
             Like like = Like.builder()
                     .comment(comment)
                     .user(user)
@@ -53,16 +52,16 @@ public class CommentServiceImpl implements CommentService {
             return comment;
         }
 
-        public List<Comment> findAllByPostId(Long postId) {
+        public List<CommentResponse> findAllByPostId(Long postId) {
             return commentRepository.findAllByPostId(postId);
         }
     public void deleteById(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
 
-        likeRepository.deleteAll(comment.getLikes());  // Deletes all likes associated with the comment
+        likeRepository.deleteAll(comment.getLikes());
 
-        commentRepository.deleteById(commentId);  // Deletes the comment itself
+        commentRepository.deleteById(commentId);
     }
 
     public Long findPostIdByCommentId(Long commentId) {

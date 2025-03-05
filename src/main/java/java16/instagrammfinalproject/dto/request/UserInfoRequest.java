@@ -37,7 +37,6 @@ public record UserInfoRequest(
         )
         String password,
 
-        // Необязательные поля, их можно оставить null
         String biography,
         @Enumerated(EnumType.STRING)
         Gender gender,

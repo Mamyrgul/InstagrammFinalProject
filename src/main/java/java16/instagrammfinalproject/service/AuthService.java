@@ -11,5 +11,4 @@ public interface AuthService {
    AuthResponse singUp (SingUpRequest singUpRequest);
    AuthResponse singIn(SingInRequest singInRequest);
    ProfileResponse getProfile();
-
 }

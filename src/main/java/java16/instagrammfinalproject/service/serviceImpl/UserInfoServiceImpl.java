@@ -58,11 +58,9 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .orElseThrow(() -> new NotFoundException(String.format("User with email %s not found!", email)));
         User updateUser = userRepo.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("User with ID %d not found!", id)));
-        // Если пользователь пытается обновить чужой аккаунт — ошибка!
         if (!currentUser.getEmail().equals(updateUser.getEmail())) {
             throw new BadRequestException("Вы не можете обновлять чужие данные!");
         }
-        // Если email изменился и уже существует у другого пользователя — ошибка!
         if (!updateUser.getEmail().equals(userInfoRequest.email()) && userRepo.existsByEmail(userInfoRequest.email())) {
             throw new BadRequestException("Этот email уже используется!");
         }
@@ -72,10 +70,8 @@ public class UserInfoServiceImpl implements UserInfoService {
         updateUser.setPassword(passwordEncoder.encode(userInfoRequest.password()));
         updateUser.setPhoneNumber(userInfoRequest.phoneNumber());
         userRepo.save(updateUser);
-        // Найдем userInfo, связанный с пользователем
         UserInfo userInfo = (UserInfo) userInfoRepo.findByUser(updateUser)
                 .orElseThrow(() -> new NotFoundException("UserInfo not found for user with ID " + id));
-        // Обновляем только непустые поля (чтобы не перезаписывать null-ами)
         if (userInfoRequest.biography() != null) {
             userInfo.setBiography(userInfoRequest.biography());
         }
@@ -85,7 +81,6 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (userInfoRequest.imageUrl() != null) {
             userInfo.setImageUrl(userInfoRequest.imageUrl());
         }
-        // Сохраняем обновленный UserInfo
         userInfoRepo.save(userInfo);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
@@ -102,18 +97,17 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfo userInfo = userInfoRepo.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("User info with ID %d not found!", id)));
 
-        if (!userInfo.getUser().getId().equals(currentUser.getId()) && !currentUser.getRole().equals(Role.ADMIN)) {
+        if (!userInfo.getUser().getId().equals(currentUser.getId()) && currentUser.getRole() != Role.ADMIN) {
             throw new BadRequestException("You cannot delete someone else's information!");
         }
 
-        userInfoRepo.delete(userInfo); // Удаляем сам объект, а не по ID
+        userInfoRepo.delete(userInfo); // Это удалит и User, и всё, что связано с ним
 
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message("User info successfully deleted!")
+                .message("User info and user successfully deleted!")
                 .build();
     }
-
 
     @Override
     public List<UserInfoResponse> findAllAdminsInfo() {

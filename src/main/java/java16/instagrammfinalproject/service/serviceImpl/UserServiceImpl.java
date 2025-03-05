@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
         private final UserRepo userRepository;
 
-        // Метод для поиска пользователя по firstName
         public User findByFirstName(String firstName) {
             return userRepository.findByFirstName(firstName)
                     .orElseThrow(() -> new RuntimeException("User with first name " + firstName + " not found"));

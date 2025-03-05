@@ -19,13 +19,13 @@ public class MentionServiceImpl implements MentionService {
     @Override
     public void addMentionToPost(Post post, Optional<User> user) {
         User mentionUser = user.orElseThrow(() -> new RuntimeException("User not found"));
-        post.addMention(Optional.of(mentionUser)); // Добавляем упоминание в сам пост
+        post.addMention(Optional.of(mentionUser));
         mentionRepository.save(Mention.builder().post(post).user(mentionUser).build());
     }
 
     @Override
     public void addMentionToComment(Comment comment, User user) {
-        comment.addMention(user); // Добавляем упоминание в комментарий
+        comment.addMention(user);
         mentionRepository.save(Mention.builder().comment(comment).user(user).build());
     }
 }

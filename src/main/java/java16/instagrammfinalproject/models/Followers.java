@@ -16,7 +16,7 @@ public class Followers {
     @SequenceGenerator(name = "fol_gen", sequenceName = "fol_seq")
     Long id;
     @ManyToOne
-    User follower;  // Кто подписывается
+    User follower;
     @ManyToOne
-    User following; // На кого подписываются
+    User following;
 }

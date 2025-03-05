@@ -20,41 +20,36 @@ public class FollowingServiceImpl implements FollowersService {
         private final FollowersRepo followersRepository;
         private final UserRepo userRepository;
 
-        // Метод для подписки/отписки
-        @Transactional
-        public User subscribe(Long followerId, Long followingId) {
-            User follower = userRepository.findById(followerId)
-                    .orElseThrow(() -> new NotFoundException("User not found"));
-            User following = userRepository.findById(followingId)
-                    .orElseThrow(() -> new NotFoundException("User not found"));
+    @Transactional
+    public User subscribe(Long followingId, Long followerId) {
+        User follower = userRepository.findById(followerId)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+        User following = userRepository.findById(followingId)
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
-            Optional<Followers> existingSubscription = followersRepository.findSubscription(followerId, followingId);
-
-            if (existingSubscription.isPresent()) {
-                // Если подписка существует, удаляем её (отписка)
-                followersRepository.delete(existingSubscription.get());
-                follower.setFollowingCount(follower.getFollowingCount() - 1);
-                following.setFollowersCount(following.getFollowersCount() - 1);
-            } else {
-                // Если подписки нет, создаём её (подписка)
-                Followers newFollower = Followers.builder()
-                        .follower(follower)
-                        .following(following)
-                        .build();
-                followersRepository.save(newFollower);
-                follower.setFollowingCount(follower.getFollowingCount() + 1);
-                following.setFollowersCount(following.getFollowersCount() + 1);
-            }
-
-            return following;
+        Optional<Followers> existingSubscription = followersRepository.findSubscription(followerId, followingId);
+        if (existingSubscription.isPresent()) {
+            followersRepository.delete(existingSubscription.get());
+            follower.setFollowingCount(follower.getFollowingCount() - 1);
+            following.setFollowersCount(following.getFollowersCount() - 1);
+        } else {
+            Followers newFollower = Followers.builder()
+                    .follower(follower)
+                    .following(following)
+                    .build();
+            followersRepository.save(newFollower);
+            follower.setFollowingCount(follower.getFollowingCount() + 1);
+            following.setFollowersCount(following.getFollowersCount() + 1);
         }
 
-        // Получить всех подписчиков
-        public List<User> getAllSubscribersByUserId(Long userId) {
+        return following;
+    }
+
+
+    public List<User> getAllSubscribersByUserId(Long userId) {
             return followersRepository.getAllSubscribersByUserId(userId);
         }
 
-        // Получить всех, на кого подписан пользователь
         public List<User> getAllSubscriptionsByUserId(Long userId) {
             return followersRepository.getAllSubscriptionsByUserId(userId);
         }

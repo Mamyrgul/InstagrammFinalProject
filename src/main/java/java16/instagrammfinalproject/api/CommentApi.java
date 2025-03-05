@@ -1,6 +1,7 @@
 package java16.instagrammfinalproject.api;
 
 import jakarta.annotation.security.PermitAll;
+import java16.instagrammfinalproject.dto.response.CommentResponse;
 import java16.instagrammfinalproject.models.Comment;
 import java16.instagrammfinalproject.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentApi {
     private final CommentService commentService;
-
-    // ✅ Сохранение комментария
-    @PreAuthorize("@securityService.isCurrentUser(#userId)")
+    @PermitAll
     @PostMapping
     public ResponseEntity<Comment> saveComment(
             @RequestParam Long postId,
@@ -26,14 +25,12 @@ public class CommentApi {
         return ResponseEntity.ok(commentService.saveComment(postId, userId, text));
     }
 
-    // ✅ Получить все комментарии по postId
     @PermitAll
     @GetMapping("/{postId}")
-    public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable Long postId) {
+    public ResponseEntity<List<CommentResponse>> getCommentsByPostId(@PathVariable Long postId) {
         return ResponseEntity.ok(commentService.findAllByPostId(postId));
     }
 
-    // ✅ Удалить комментарий (и все его лайки)
     @PreAuthorize("@securityService.isCommentOwner(#commentId) or @securityService.isPostOwner(@commentService.findPostIdByCommentId(#commentId))")
     @DeleteMapping("/{commentId}")
     public ResponseEntity<String> deleteComment(@PathVariable Long commentId) {

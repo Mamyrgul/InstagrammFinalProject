@@ -16,13 +16,11 @@ import java.util.List;
 public class FollowingApi {
         private final FollowersService followersService;
 
-        // Подписка/отписка
         @PostMapping("/subscribe/{followerId}/{followingId}")
         public ResponseEntity<String> subscribe(@PathVariable Long followerId, @PathVariable Long followingId) {
             User followingUser = followersService.subscribe(followerId, followingId);
             boolean isSubscribed = followersService.getAllSubscribersByUserId(followingId).stream()
                     .anyMatch(user -> user.getId().equals(followerId));
-
             String message = isSubscribed ? "Подписаться" : "Отменить подписку";
             return ResponseEntity.ok(message);
         }

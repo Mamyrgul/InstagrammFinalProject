@@ -16,19 +16,17 @@ public class LikeApi {
 
     private final LikeService likeService;
 
-    // Endpoint to toggle like on a post
-    @PreAuthorize("@securityService.isCurrentUser(#userId)")
-    @PostMapping("/post/{postId}/user/{userId}")
-    public ResponseEntity<String> toggleLikeOnPost(@PathVariable Long postId, @PathVariable Long userId) {
-        likeService.toggleLikeOnPost(postId, userId);
+    @PreAuthorize("@securityService.isCurrentUser(#request.userId)")
+    @PostMapping("/post/{postId}")
+    public ResponseEntity<String> toggleLikeOnPost(@PathVariable Long postId) {
+        likeService.toggleLikeOnPost(postId);
         return ResponseEntity.ok("Like toggled successfully");
     }
 
-    // Endpoint to toggle like on a comment
-    @PreAuthorize("@securityService.isCurrentUser(#userId)")
-    @PostMapping("/comment/{commentId}/user/{userId}")
-    public ResponseEntity<String> toggleLikeOnComment(@PathVariable Long commentId, @PathVariable Long userId) {
-        likeService.toggleLikeOnComment(commentId, userId);
+    @PreAuthorize("@securityService.isCurrentUser(#request.userId)")
+    @PostMapping("/comment/{commentId}")
+    public ResponseEntity<String> toggleLikeOnComment(@PathVariable Long commentId) {
+        likeService.toggleLikeOnComment(commentId);
         return ResponseEntity.ok("Like toggled successfully");
     }
 }

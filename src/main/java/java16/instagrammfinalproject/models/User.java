@@ -33,9 +33,8 @@ public class User implements UserDetails {
     String phoneNumber;
     @Enumerated(EnumType.STRING)
     Role role;
-
-    int followersCount; // Количество подписчиков
-    int followingCount; // Количество подписок
+    int followersCount;
+    int followingCount;
 
     public User(String firstName, String lastName, String email) {
         this.firstName = firstName;
@@ -46,45 +45,46 @@ public class User implements UserDetails {
     public User(String firstName) {
         this.firstName = firstName;
     }
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private UserInfo userInfo;
 
-    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Post> posts;
 
-    @OneToMany(mappedBy = "follower", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Comment> comments;
+
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Followers> following; // Кого я подписал
 
-    @OneToMany(mappedBy = "following", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Followers> followers; // Кто подписался на меня
 
-    // Метод для добавления подписчика
     public void addFollower(Followers follower) {
         if (!followers.contains(follower)) {
             followers.add(follower);
-            followersCount++; // Увеличиваем количество подписчиков
+            followersCount++;
         }
     }
 
-    // Метод для удаления подписчика
     public void removeFollower(Followers follower) {
         if (followers.contains(follower)) {
             followers.remove(follower);
-            followersCount--; // Уменьшаем количество подписчиков
+            followersCount--;
         }
     }
 
-    // Метод для подписки на другого пользователя
     public void followUser(Followers followingUser) {
         if (!following.contains(followingUser)) {
             following.add(followingUser);
-            followingCount++; // Увеличиваем количество подписок
+            followingCount++;
         }
     }
 
-    // Метод для отписки
     public void unfollowUser(Followers followingUser) {
         if (following.contains(followingUser)) {
             following.remove(followingUser);
-            followingCount--; // Уменьшаем количество подписок
+            followingCount--;
         }
     }
 
